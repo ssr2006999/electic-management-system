@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Electric Management{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{{ page_background_image or url_for('static', filename='images/bg.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+
+    {% if session['user_id'] %}
+    <div class="top-bar">
+        <h2>{% block page_title %}{% endblock %}</h2>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </div>
+    <div class="nav">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('customers') }}">Customers</a>
+        <a href="{{ url_for('electricians') }}">Electricians</a>
+        <a href="{{ url_for('projects') }}">Projects</a>
+        <a href="{{ url_for('billing') }}">Billing</a>
+        <a href="{{ url_for('feedback') }}">Feedback</a>
+    </div>
+    {% endif %}
+
+    <div class="content-wrapper">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

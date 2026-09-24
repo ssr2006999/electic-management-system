@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block page_title %}Register{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="center-card" style="height: 280px;">
+        <h2>Register</h2>
+        <form action="{{ url_for('register') }}" method="post" class="project-form">
+            <input type="text" name="username" placeholder="Choose a Username" required>
+            <input type="password" name="password" placeholder="Choose a Password" required>
+            <button type="submit" class="btn">Register</button>
+        </form>
+        <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+    </div>
+</div>
+{% endblock %}

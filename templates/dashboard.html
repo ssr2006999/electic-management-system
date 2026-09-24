@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="cards">
+
+        <a href="{{ url_for('customers') }}" class="card" style="background-image: url('{{ url_for('static', filename='images/customer_icon.png') }}');">
+            <div class="card-content">
+                <h3>Customers</h3>
+                <p>Manage customer details</p>
+            </div>
+        </a>
+
+        <a href="{{ url_for('electricians') }}" class="card" style="background-image: url('{{ url_for('static', filename='images/electrician_icon.png') }}');">
+            <div class="card-content">
+                <h3>Electricians</h3>
+                <p>Manage electricians and availability</p>
+            </div>
+        </a>
+
+        <a href="{{ url_for('projects') }}" class="card" style="background-image: url('{{ url_for('static', filename='images/projects_icon.png') }}');">
+            <div class="card-content">
+                <h3>Projects</h3>
+                <p>Create and track projects</p>
+            </div>
+        </a>
+
+        <a href="{{ url_for('billing') }}" class="card" style="background-image: url('{{ url_for('static', filename='images/billing_icon.png') }}');">
+            <div class="card-content">
+                <h3>Billing</h3>
+                <p>Manage payments and invoices</p>
+            </div>
+        </a>
+
+        <a href="{{ url_for('feedback') }}" class="card" style="background-image: url('{{ url_for('static', filename='images/feedback_icon.png') }}');">
+            <div class="card-content">
+                <h3>Feedback</h3>
+                <p>View customer feedback</p>
+            </div>
+        </a>
+
+    </div>
+</div>
+{% endblock %}

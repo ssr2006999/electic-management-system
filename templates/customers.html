@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Customers{% endblock %}
+
+{% block page_title %}Manage Customers{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="project-card">
+        <h3>Add New Customer</h3>
+        <form action="{{ url_for('customers') }}" method="post" class="project-form">
+            <input type="text" name="name" placeholder="Customer Name" required>
+            <input type="text" name="contact" placeholder="Contact Info (Phone/Email)">
+            <input type="text" name="address" placeholder="Address">
+            <button type="submit" class="btn">Add Customer</button>
+        </form>
+    </div>
+
+    <div class="table-wrapper">
+        <h3>Existing Customers</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.contact }}</td>
+                    <td>{{ customer.address }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block page_title %}Electric Management System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="center-card">
+        <h1>Welcome</h1>
+        <p>Your one-stop solution for managing electrical projects.</p>
+        <a href="{{ url_for('login') }}" class="btn">Login</a>
+        <a href="{{ url_for('register') }}" class="btn">Register</a>
+    </div>
+</div>
+{% endblock %}

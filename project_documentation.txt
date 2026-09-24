@@ -1,0 +1,144 @@
+# Electric Management System - Project Documentation
+
+## 1. Project Overview
+
+**Project Name:** Electric Management System
+
+**Objective:** This project is a web-based application designed to help a small electrical contracting business manage its core operations. It provides a centralized system to handle customers, electricians, projects, billing, and feedback.
+
+**Core Features:**
+- Secure user authentication (Login/Register).
+- A central dashboard for navigating to different management sections.
+- CRUD (Create, Read, Update, Delete) functionality for:
+    - Customers
+    - Electricians
+    - Projects
+    - Billing Records
+    - Feedback
+- A simple, clean, and intuitive user interface.
+
+---
+
+## 2. Core Technology Stack
+
+- **Backend:** Python with the Flask framework.
+- **Database:** SQLite 3, a lightweight, file-based database.
+- **Frontend:** HTML5, CSS3, and the Jinja2 templating engine (which is part of Flask).
+
+---
+
+## 3. Project File Structure
+
+```
+electic management system/
+│
+├── app.py              # The main application file containing all Python code.
+├── database.db         # The SQLite database file (created automatically).
+│
+├── templates/          # Contains all HTML files.
+│   ├── base.html       # The master template that all other pages inherit from.
+│   ├── index.html      # The public home page.
+│   ├── login.html      # User login page.
+│   ├── register.html   # User registration page.
+│   └── ... (dashboard.html, customers.html, etc.)
+│
+└── static/             # Contains all static files (CSS, images).
+    ├── style.css       # The main stylesheet.
+    └── images/         # Contains all images used in the project.
+```
+
+---
+
+## 4. The Python Backend (`app.py`)
+
+The `app.py` file is the brain of the application. It handles all logic, routing, and data management.
+
+**Key Concepts:**
+
+- **Flask App Initialization:**
+  ```python
+  app = Flask(__name__)
+  app.secret_key = "a_simple_secret_key"
+  ```
+  This creates the Flask application instance. The `secret_key` is necessary to manage user sessions securely.
+
+- **Database Connection:**
+  The `get_db_connection()` function creates and returns a connection to the `database.db` file. The `create_tables()` function is called once at the start to ensure all necessary tables exist.
+
+- **Routing:** Flask uses decorators (`@app.route(...)`) to map URLs to specific Python functions.
+  - `@app.route("/")`: Maps to the `home()` function for the homepage.
+  - `@app.route("/login", methods=["GET", "POST"])`: Maps to the `login()` function. It accepts both GET requests (for displaying the page) and POST requests (for submitting the login form).
+
+- **User Session Management:**
+  The application uses Flask's session object to track logged-in users.
+  - When a user logs in successfully, their `user_id` is stored in the session: `session["user_id"] = user["id"]`.
+  - To protect pages, each function checks if this `user_id` exists in the session: `if "user_id" not in session: return redirect(url_for("login"))`.
+  - When a user logs out, the session is cleared: `session.clear()`.
+
+- **Database Interaction:**
+  Within each route, the code opens a database connection, performs SQL queries (INSERT, SELECT), commits changes, and then closes the connection. This pattern is repeated for adding, viewing, and managing all data.
+
+---
+
+## 5. The Frontend (HTML Templates)
+
+The frontend is built using HTML and styled with CSS. Flask uses the Jinja2 templating engine to make the HTML dynamic.
+
+- **`base.html` - The Master Template:** This is the most important HTML file. It contains the common structure for every page (the HTML head, top navigation bar, and the basic page layout). All other pages `extend` this template.
+
+- **Template Inheritance:**
+  In `customers.html` (and all other pages), the first line is `{% extends "base.html" %}`. This tells Flask to use `base.html` as the layout. The content of `customers.html` is then inserted into the `{% block content %}{% endblock %}` section of `base.html`. This avoids repeating code and makes the site easier to maintain.
+
+- **Dynamic Data:**
+  Data from the Python backend is passed into the HTML templates.
+  - `render_template("customers.html", customers=all_customers)`: In `app.py`, this line passes the `all_customers` list to the HTML file.
+  - `{% for customer in customers %}`: In `customers.html`, this Jinja2 loop iterates through the list.
+  - `<td>{{ customer.name }}</td>`: This displays the name of each customer in the table.
+
+- **Dynamic Backgrounds:**
+  The `base.html` template dynamically sets the background image for each page. The URL for the background is passed from the `render_template` function in `app.py` (e.g., `page_background_image=bg_image_url`).
+
+---
+
+## 6. The Database (`database.db`)
+
+The database consists of six tables that store all the application's data.
+
+- **`users`**: Stores login information (username, password).
+- **`customers`**: Stores customer details (name, contact, address).
+- **`electricians`**: Stores electrician details (name, skill level, availability).
+- **`projects`**: This is a central table that links everything together.
+    - `customer_id`: Links to a record in the `customers` table.
+    - `electrician_id`: Links to a record in the `electricians` table.
+- **`billing`**: Stores billing information for projects.
+    - `project_id`: Links to a record in the `projects` table.
+- **`feedback`**: Stores feedback related to specific projects.
+    - `project_id`: Links to a record in the `projects` table.
+
+---
+
+## 7. Potential Examiner Questions & Answers
+
+**Q: What is the purpose of this project?**
+**A:** This project is a full-stack web application designed to help a small business manage its projects, clients, and staff. It demonstrates skills in backend development with Python and Flask, database management with SQLite, and frontend development with HTML and CSS.
+
+**Q: What technologies did you use and why?**
+**A:** I used Python with the Flask framework because it is a lightweight and flexible framework, great for building web applications quickly. For the database, I chose SQLite because it's simple to set up (it's just a single file) and is well-supported by Python, making it ideal for a project of this scale. The frontend uses standard HTML and CSS, with the Jinja2 template engine for dynamic content.
+
+**Q: How does user authentication work?**
+**A:** When a user registers, their username and password are saved to the `users` table. When they try to log in, the application checks the submitted username and password against the database. If they match, the user's ID is stored in a server-side session. This session is used to verify that the user is logged in on subsequent requests.
+
+**Q: How do you prevent unauthorized access to pages like the dashboard?**
+**A:** In each function that renders a protected page, there is a check at the very beginning: `if "user_id" not in session:`. If the `user_id` is not found in the session, it means the user is not logged in, and they are immediately redirected to the login page.
+
+**Q: Can you explain the structure of your HTML templates and the purpose of `base.html`?**
+**A:** The `base.html` file acts as a master template. It contains the common HTML for all pages, like the navigation bar and footer. All other pages, like `customers.html`, use the `{% extends "base.html" %}` tag to inherit this structure. They then fill in their unique content in a section called `{% block content %}`. This principle, called template inheritance, helps avoid code repetition and keeps the design consistent.
+
+**Q: How do you pass data from Python to the HTML pages?**
+**A:** I use the `render_template` function in Flask. When calling this function, I can pass variables from my Python code to the template. For example, `render_template('customers.html', customers=all_customers)` makes the Python list `all_customers` available in the HTML under the variable name `customers`. I can then use Jinja2 syntax, like a `{% for %}` loop, to display this data.
+
+**Q: What is the purpose of `app.secret_key`?**
+**A:** The `secret_key` is a security measure used by Flask to encrypt the user session data. Without it, Flask cannot securely manage sessions, and the application would be vulnerable. It's a critical part of the authentication system.
+
+**Q: How would you improve this project in the future?**
+**A:** A key security improvement would be to implement password hashing instead of storing passwords in plaintext. I would also separate the database logic more cleanly from the route functions for better organization. Additionally, I could add features like a search functionality, the ability to edit existing records, or user roles to differentiate between managers and regular staff.

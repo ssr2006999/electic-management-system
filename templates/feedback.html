@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block page_title %}Customer Feedback{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="project-card">
+        <h3>Submit Feedback</h3>
+        <form action="{{ url_for('feedback') }}" method="post" class="project-form">
+            <select name="project_id" required>
+                <option value="">-- Select Project --</option>
+                {% for project in projects %}
+                <option value="{{ project.id }}">{{ project.project_name }}</option>
+                {% endfor %}
+            </select>
+            <textarea name="message" placeholder="Enter feedback message..." rows="4" required></textarea>
+            <button type="submit" class="btn">Submit Feedback</button>
+        </form>
+    </div>
+
+    <div class="table-wrapper">
+        <h3>All Feedback</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Project Name</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in feedback %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.project_name }}</td>
+                    <td>{{ item.message }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Electricians{% endblock %}
+
+{% block page_title %}Manage Electricians{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="project-card">
+        <h3>Add New Electrician</h3>
+        <form action="{{ url_for('electricians') }}" method="post" class="project-form">
+            <input type="text" name="name" placeholder="Electrician Name" required>
+            <input type="text" name="skill_level" placeholder="Skill Level (e.g., Master, Apprentice)">
+            <select name="availability">
+                <option value="Available">Available</option>
+                <option value="Unavailable">Unavailable</option>
+                <option value="On-Leave">On-Leave</option>
+            </select>
+            <button type="submit" class="btn">Add Electrician</button>
+        </form>
+    </div>
+
+    <div class="table-wrapper">
+        <h3>Existing Electricians</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Skill Level</th>
+                    <th>Availability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for electrician in electricians %}
+                <tr>
+                    <td>{{ electrician.id }}</td>
+                    <td>{{ electrician.name }}</td>
+                    <td>{{ electrician.skill_level }}</td>
+                    <td>{{ electrician.availability }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
