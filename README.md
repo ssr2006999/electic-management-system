@@ -1,1 +1,1 @@
-"# electic-management-system" 
+electic-management-system" 
